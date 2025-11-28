@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios - Mecánica de Fluidos</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/ejercicio.css">
+    <script defer src="/js/ejercicios.js"></script>
+    <script defer src="/js/app.js"></script>
+    <style>
+        /* Estilos específicos para la calculadora flotante */
+        #calculadora-flotante {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .calculadora-cerrada {
+            width: 150px;
+            height: 50px;
+            overflow: hidden;
+        }
+        
+        .calculadora-abierta {
+            width: 300px;
+            height: 400px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        #btn-toggle-calculadora {
+            width: 100%;
+            height: 50px;
+            background: #1e5799;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: bold;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+        }
+        
+        #calculadora-contenido {
+            padding: 15px;
+            height: calc(100% - 50px);
+            overflow-y: auto;
+        }
+        
+        #calculadora-contenido h3 {
+            margin-top: 0;
+            color: #1e5799;
+            text-align: center;
+        }
+        
+        .calc-seccion {
+            margin-bottom: 15px;
+        }
+        
+        .calc-seccion label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .calc-seccion select, .calc-seccion input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .calc-resultado {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f0f8ff;
+            border-radius: 5px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .calc-botones {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .calc-botones button {
+            flex: 1;
+            padding: 8px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        #btn-calcular {
+            background: #1e5799;
+            color: white;
+        }
+        
+        #btn-limpiar {
+            background: #e74c3c;
+            color: white;
+        }
+        
+        /* Estilos para los selectores de unidades en respuestas */
+        .respuesta-contenedor {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .respuesta-input {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .unidad-select {
+            width: 120px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+        
+        /* Estilos para ejercicios con múltiples respuestas */
+        .multi-respuesta {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #1e5799;
+        }
+        
+        .pregunta-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .pregunta-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .pregunta-texto {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #2c3e50;
+        }
+    </style>
+</head>
+<body>
+    <!-- Calculadora de Unidades Flotante -->
+    <div id="calculadora-flotante" class="calculadora-cerrada">
+        <button id="btn-toggle-calculadora" onclick="toggleCalculadora()">
+            🔢 Calculadora
+        </button>
+        <div id="calculadora-contenido">
+            <h3>🔄 Conversor de Unidades</h3>
+            
+            <div class="calc-seccion">
+                <label>Categoría:</label>
+                <select id="calc-categoria" onchange="cambiarCategoria()">
+                    <option value="longitud">📏 Longitud</option>
+                    <option value="presion">⚙️ Presión</option>
+                    <option value="fuerza">💪 Fuerza</option>
+                    <option value="densidad">🧪 Densidad</option>
+                    <option value="viscosidad">💧 Viscosidad</option>
+                    <option value="velocidad">🚀 Velocidad</option>
+                    <option value="area">📐 Área</option>
+                    <option value="volumen">📦 Volumen</option>
+                    <option value="torque">🔧 Torque</option>
+                    <option value="temperatura">🌡️ Temperatura</option>
+                </select>
+            </div>
+            
+            <div class="calc-seccion">
+                <label>De:</label>
+                <select id="calc-unidad-de"></select>
+            </div>
+            
+            <div class="calc-seccion">
+                <label>A:</label>
+                <select id="calc-unidad-a"></select>
+            </div>
+            
+            <div class="calc-seccion">
+                <label>Valor:</label>
+                <input type="number" id="calc-valor" placeholder="Ingrese valor">
+            </div>
+            
+            <div class="calc-botones">
+                <button id="btn-calcular" onclick="calcularConversion()">Calcular</button>
+                <button id="btn-limpiar" onclick="limpiarCalculadora()">Limpiar</button>
+            </div>
+            
+            <div class="calc-resultado" id="calc-resultado">
+                Resultado aparecerá aquí
+            </div>
+        </div>
+    </div>
+    
+    <header>
+        <div class="logo-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Universidad_Tecnol%C3%B3gica_de_Bol%C3%ADvar.png" alt="Logo" class="logo">
+            <h1>Ejercicios Interactivos</h1>
+        </div>
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="ejercicios.html" class="active">Ejercicios</a>
+            <a href="resultados.html">Resultados</a>
+            <a href="index.html#Acerca">Acerca de</a>
+        </nav>
+        <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>      
+    </header>
+
+    <main>
+        <section class="contenedor-ejercicios">
+            
+            <h2>💧 Práctica y Evaluación Continua</h2>
+            <p>Selecciona el ejercicio y usa los botones de navegación inferior para avanzar o retroceder.</p>
+            
+            <div id="puntajeUsuarioDisplay" class="score-display">Puntaje Total: 0</div>
+
+            <div class="ejercicio card" id="ejercicio1" data-index="1">
+                <h3>Ejercicio 1: Conversión de Unidades</h3>
+                
+                <img src="/images/ej 1.png" alt="Ejercicio 1" class="ejercicio-img">
+                
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta1">
+                        <select class="unidad-select" id="unidad1">
+                            <option value="m">Metros (m)</option>
+                            <option value="cm">Centímetros (cm)</option>
+                            <option value="mm">Milímetros (mm)</option>
+                            <option value="ft">Pies (ft)</option>
+                            <option value="in">Pulgadas (in)</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay1" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+                
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(1)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo1">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ejercicio card" id="ejercicio2" data-index="2" style="display: none;">
+                <h3>Ejercicio 2: Conversión de Unidades</h3>
+                
+                <img src="/images/ej 2.png" alt="ejercicio 2" class="ejercicio-img">
+                
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta2">
+                        <select class="unidad-select" id="unidad2">
+                            <option value="Pa">Pascales (Pa)</option>
+                            <option value="kPa">Kilopascales (kPa)</option>
+                            <option value="bar">Bares (bar)</option>
+                            <option value="atm">Atmósferas (atm)</option>
+                            <option value="psi">PSI (lb/in²)</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay2" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+                
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(2)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo2">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ejercicio card" id="ejercicio3" data-index="3" style="display: none;">
+                <h3>Ejercicio 3: Conversión de Unidades</h3>
+                
+                <img src="/images/ej 3.png" alt="ejercicio 3" class="ejercicio-img">
+                
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta3">
+                        <select class="unidad-select" id="unidad3">
+                            <option value="N">Newtons (N)</option>
+                            <option value="kN">Kilonewtons (kN)</option>
+                            <option value="kgf">Kilogramos-fuerza (kgf)</option>
+                            <option value="lbf">Libras-fuerza (lbf)</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay3" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+                
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(3)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo3">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ejercicio card" id="ejercicio4" data-index="4" style="display: none;">
+                <h3>Ejercicio 4: Flotación (Principio de Arquímedes)</h3>
+                
+                <div class="enunciado-container">
+                    <img src="/images/ej 4.png" alt="Ejercicio de flotación" class="ejercicio-img-texto">
+                    <p>Considere un bloque cúbico grande de hielo que flota en el mar. Las gravedades específicas del hielo y del agua de mar son $0.92$ y $1.025$, respectivamente. Si una parte de $15\text{ cm}$ de alto del bloque de hielo se extiende por encima de la superficie del agua, determine la altura del bloque.</p>
+                </div>
+
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta4">
+                        <select class="unidad-select" id="unidad4">
+                            <option value="cm">Centímetros (cm)</option>
+                            <option value="m">Metros (m)</option>
+                            <option value="mm">Milímetros (mm)</option>
+                            <option value="ft">Pies (ft)</option>
+                            <option value="in">Pulgadas (in)</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay4" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+                
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(4)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo4">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ejercicio card" id="ejercicio5" data-index="5" style="display: none;">
+                <h3>Ejercicio 5: Estabilidad (Metacentro)</h3>
+                
+                <div class="enunciado-container">
+                    <img src="/images/ej 5.png" alt="Ejercicio de estabilidad" class="ejercicio-img-texto">
+                    <p>La figura 5.30 muestra una barcaza fluvial utilizada para transportar materiales a granel. Suponga que el centro de gravedad de la barcaza se encuentra en su centroide y que flota con $8.00\text{ ft}$ sumergidos. Determine el ancho mínimo que garantiza su estabilidad en agua de mar.</p>
+                </div>
+                
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta5">
+                        <select class="unidad-select" id="unidad5">
+                            <option value="ft">Pies (ft)</option>
+                            <option value="m">Metros (m)</option>
+                            <option value="cm">Centímetros (cm)</option>
+                            <option value="in">Pulgadas (in)</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay5" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(5)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo5">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO CON MÚLTIPLES RESPUESTAS -->
+            <div class="ejercicio card" id="ejercicio6" data-index="6" style="display: none;">
+                <h3>Ejercicio 6</h3>
+                
+                <div class="enunciado-container">
+                    <img src="/images/ej 6.png" alt="Ejercicio de tuberías" class="ejercicio-img-texto">
+                    <p></p>
+                </div>
+
+                <div class="multi-respuesta">
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">a) Y cb</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta6a">
+                            <select class="unidad-select" id="unidad6a">
+                                <option value="m/s">m/s</option>
+                                <option value="cm/s">cm/s</option>
+                                <option value="ft/s">ft/s</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">b) Centro de flotabilidad (consideramos la parte sumergida)</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta6b">
+                            <select class="unidad-select" id="unidad6b">
+                                <option value="m">Metros (m)</option>
+                                <option value="cm">Centímetros (cm)</option>
+                                <option value="ft">Pies (ft)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">c) Distancia al metacentro desde el centro de flotabilidad</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta6c">
+                            <select class="unidad-select" id="unidad6c">
+                                <option value="ft">Pies (ft)</option>
+                                <option value="m">Metros (m)</option>
+                                <option value="cm">Centímetros (cm)</option>
+                                <option value="in">Pulgadas (in)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">d) Posicion del metacentro</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta6d">
+                            <select class="unidad-select" id="unidad6d">
+                                <option value="ft">Pies (ft)</option>
+                                <option value="m">Metros (m)</option>
+                                <option value="cm">Centímetros (cm)</option>
+                                <option value="in">Pulgadas (in)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <p id="puntajeDisplay6" class="puntaje-parcial">Puntaje: 0</p>
+
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviarMultiples(6)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo6">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIOS 7-9 NORMALES -->
+            <div class="ejercicio card" id="ejercicio7" data-index="7" style="display: none;">
+                <h3>Ejercicio 7: Presión Hidrostática</h3>
+                
+                <div class="enunciado-container">
+                    <img src="/images/ej 7.png" alt="Ejercicio de presión hidrostática" class="ejercicio-img-texto">
+                    <p></p>
+                </div>
+
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta7">
+                        <select class="unidad-select" id="unidad7">
+                            <option value="ft">Pies (ft)</option>
+                            <option value="m">Metros (m)</option>
+                            <option value="cm">Centímetros (cm)</option>
+                            <option value="in">Pulgadas (in)</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay7" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+                
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(7)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo7">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ejercicio card" id="ejercicio8" data-index="8" style="display: none;">
+                <h3>Ejercicio 8: Densidad del Iceberg</h3>
+                
+                <div class="enunciado-container">
+                    <img src="/images/ej 8.png" alt="Ejercicio de densidad del iceberg" class="ejercicio-img-texto">
+                    <p>Se estima que 90% del volumen de un iceberg está debajo de la superficie, mientras que sólo es visible 10 % arriba de la superficie. Para agua de mar con una densidad de 1 025 kg/m³, estime la densidad del iceberg.</p>
+                </div>
+
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta8">
+                        <select class="unidad-select" id="unidad8">
+                            <option value="kg/m3">kg/m³</option>
+                            <option value="g/cm3">g/cm³</option>
+                            <option value="lb/ft3">lb/ft³</option>
+                            <option value="slug/ft3">slug/ft³</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay8" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+                
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(8)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo8">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ejercicio card" id="ejercicio9" data-index="9" style="display: none;">
+                <h3>Ejercicio 9: Espesor de Latón para Flotabilidad Neutra</h3>
+                
+                <div class="enunciado-container">
+                    <img src="/images/ej 9.png" alt="Ejercicio de espesor de latón" class="ejercicio-img-texto">
+                    <p>Una pesa de latón se unirá a la parte inferior del cilindro descrito en los problemas 5.22 y 5.23, de modo que esté completamente sumergido y tenga flotabilidad neutra en agua a 95 °C. El latón debe tener la forma de un cilindro con el mismo diámetro que el cilindro original mostrado en la figura 5.24. ¿Cuál es el espesor requerido para el latón?</p>
+                </div>
+
+                <div class="input-grupo">
+                    <div class="respuesta-contenedor">
+                        <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta9">
+                        <select class="unidad-select" id="unidad9">
+                            <option value="mm">Milímetros (mm)</option>
+                            <option value="cm">Centímetros (cm)</option>
+                            <option value="m">Metros (m)</option>
+                            <option value="in">Pulgadas (in)</option>
+                            <option value="ft">Pies (ft)</option>
+                        </select>
+                    </div>
+                    <p id="puntajeDisplay9" class="puntaje-parcial">Puntaje: 0</p>
+                </div>
+                
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviar(9)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo9">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- EJERCICIO 10 CON MÚLTIPLES RESPUESTAS -->
+            <div class="ejercicio card" id="ejercicio10" data-index="10" style="display: none;">
+                <h3>Ejercicio 10: Estabilidad de Plataforma</h3>
+                
+                <div class="enunciado-container">
+                    <img src="/images/ej 10.png" alt="Ejercicio de estabilidad de plataforma" class="ejercicio-img-texto">
+                    <p>Se está diseñando una plataforma para soportar un equipo de control de la contaminación del agua. Como se muestra en la figura 5.31, su base es de 36.00 in de ancho por 48.00 in de largo y 12.00 in de alto. El sistema completo pesa 130 lb y su centro de gravedad está a 34.0 in por encima de la superficie superior de la plataforma. ¿El sistema propuesto será estable cuando flote en agua de mar?</p>
+                </div>
+
+                <div class="multi-respuesta">
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">a) BM</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta10a">
+                            <select class="unidad-select" id="unidad10a">
+                                <option value="in">Pulgadas (in)</option>
+                                <option value="cm">Centímetros (cm)</option>
+                                <option value="m">Metros (m)</option>
+                                <option value="ft">Pies (ft)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">b) KM</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta10b">
+                            <select class="unidad-select" id="unidad10b">
+                                <option value="in">Pulgadas (in)</option>
+                                <option value="cm">Centímetros (cm)</option>
+                                <option value="m">Metros (m)</option>
+                                <option value="ft">Pies (ft)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">c) KG</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta10c">
+                            <select class="unidad-select" id="unidad10c">
+                                <option value="in">Pulgadas (in)</option>
+                                <option value="cm">Centímetros (cm)</option>
+                                <option value="m">Metros (m)</option>
+                                <option value="ft">Pies (ft)</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="pregunta-item">
+                        <div class="pregunta-texto">d)KB</div>
+                        <div class="respuesta-contenedor">
+                            <input type="number" placeholder="Respuesta" class="respuesta-input" id="respuesta10d" min="0" max="1" step="1">
+                            <select class="unidad-select" id="unidad10d" disabled>
+                                <option value="adimensional">Adimensional</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                
+                <p id="puntajeDisplay10" class="puntaje-parcial">Puntaje: 0</p>
+
+                <div class="accion-grupo">
+                    <button onclick="guardarYEnviarMultiples(10)" class="btn-verificar">Verificar y Guardar</button>
+                    <div class="semaforo" id="semaforo10">
+                        <div class="luz red"></div>
+                        <div class="luz yellow"></div>
+                        <div class="luz green"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="nav-ejercicios">
+                <button id="btnAnterior" class="btn-nav">⬅ Anterior</button>
+                <span id="contador">Ejercicio 1 de 10</span>
+                <button id="btnSiguiente" class="btn-nav">Siguiente ⮕</button>
+            </div>
+
+        </section>
+    </main>
+
+    <script>
+        // Funciones para la calculadora flotante
+        function toggleCalculadora() {
+            const calculadora = document.getElementById('calculadora-flotante');
+            if (calculadora.classList.contains('calculadora-cerrada')) {
+                calculadora.classList.remove('calculadora-cerrada');
+                calculadora.classList.add('calculadora-abierta');
+            } else {
+                calculadora.classList.remove('calculadora-abierta');
+                calculadora.classList.add('calculadora-cerrada');
+            }
+        }
+
+        // Definir unidades por categoría
+        const unidades = {
+            longitud: [
+                { nombre: "Metros (m)", valor: 1 },
+                { nombre: "Centímetros (cm)", valor: 0.01 },
+                { nombre: "Milímetros (mm)", valor: 0.001 },
+                { nombre: "Pies (ft)", valor: 0.3048 },
+                { nombre: "Pulgadas (in)", valor: 0.0254 },
+                { nombre: "Yardas (yd)", valor: 0.9144 }
+            ],
+            presion: [
+                { nombre: "Pascales (Pa)", valor: 1 },
+                { nombre: "Kilopascales (kPa)", valor: 1000 },
+                { nombre: "Bares (bar)", valor: 100000 },
+                { nombre: "Atmósferas (atm)", valor: 101325 },
+                { nombre: "PSI (lb/in²)", valor: 6894.76 },
+                { nombre: "mmHg", valor: 133.322 }
+            ],
+            fuerza: [
+                { nombre: "Newtons (N)", valor: 1 },
+                { nombre: "Kilonewtons (kN)", valor: 1000 },
+                { nombre: "Kilogramos-fuerza (kgf)", valor: 9.80665 },
+                { nombre: "Libras-fuerza (lbf)", valor: 4.44822 },
+                { nombre: "Dinas (dyn)", valor: 0.00001 }
+            ],
+            densidad: [
+                { nombre: "kg/m³", valor: 1 },
+                { nombre: "g/cm³", valor: 1000 },
+                { nombre: "lb/ft³", valor: 16.0185 },
+                { nombre: "slug/ft³", valor: 515.379 }
+            ],
+            viscosidad: [
+                { nombre: "Pa·s", valor: 1 },
+                { nombre: "cP (centipoise)", valor: 0.001 },
+                { nombre: "P (poise)", valor: 0.1 },
+                { nombre: "lb/(ft·s)", valor: 1.48816 },
+                { nombre: "N·s/m²", valor: 1 }
+            ],
+            velocidad: [
+                { nombre: "m/s", valor: 1 },
+                { nombre: "km/h", valor: 0.277778 },
+                { nombre: "ft/s", valor: 0.3048 },
+                { nombre: "mph", valor: 0.44704 },
+                { nombre: "nudos", valor: 0.514444 }
+            ],
+            area: [
+                { nombre: "m²", valor: 1 },
+                { nombre: "cm²", valor: 0.0001 },
+                { nombre: "mm²", valor: 0.000001 },
+                { nombre: "ft²", valor: 0.092903 },
+                { nombre: "in²", valor: 0.00064516 },
+                { nombre: "hectáreas", valor: 10000 }
+            ],
+            volumen: [
+                { nombre: "m³", valor: 1 },
+                { nombre: "litros (L)", valor: 0.001 },
+                { nombre: "cm³", valor: 0.000001 },
+                { nombre: "ft³", valor: 0.0283168 },
+                { nombre: "in³", valor: 0.0000163871 },
+                { nombre: "galones (US)", valor: 0.00378541 }
+            ],
+            torque: [
+                { nombre: "N·m", valor: 1 },
+                { nombre: "kgf·m", valor: 9.80665 },
+                { nombre: "lbf·ft", valor: 1.35582 },
+                { nombre: "lbf·in", valor: 0.112985 }
+            ],
+            temperatura: [
+                { nombre: "Celsius (°C)", valor: "celsius" },
+                { nombre: "Fahrenheit (°F)", valor: "fahrenheit" },
+                { nombre: "Kelvin (K)", valor: "kelvin" }
+            ]
+        };
+
+        function cambiarCategoria() {
+            const categoria = document.getElementById('calc-categoria').value;
+            const unidadDe = document.getElementById('calc-unidad-de');
+            const unidadA = document.getElementById('calc-unidad-a');
+            
+            // Limpiar selects
+            unidadDe.innerHTML = '';
+            unidadA.innerHTML = '';
+            
+            // Llenar con nuevas unidades
+            unidades[categoria].forEach(unidad => {
+                const optionDe = document.createElement('option');
+                optionDe.textContent = unidad.nombre;
+                optionDe.value = unidad.valor;
+                unidadDe.appendChild(optionDe);
+                
+                const optionA = document.createElement('option');
+                optionA.textContent = unidad.nombre;
+                optionA.value = unidad.valor;
+                unidadA.appendChild(optionA);
+            });
+            
+            // Seleccionar opciones por defecto diferentes
+            if (unidades[categoria].length > 1) {
+                unidadA.selectedIndex = 1;
+            }
+        }
+
+        function calcularConversion() {
+            const categoria = document.getElementById('calc-categoria').value;
+            const valor = parseFloat(document.getElementById('calc-valor').value);
+            const unidadDe = document.getElementById('calc-unidad-de');
+            const unidadA = document.getElementById('calc-unidad-a');
+            const resultado = document.getElementById('calc-resultado');
+            
+            if (isNaN(valor)) {
+                resultado.textContent = "Ingrese un valor válido";
+                return;
+            }
+            
+            const factorDe = parseFloat(unidadDe.value);
+            const factorA = parseFloat(unidadA.value);
+            
+            // Manejo especial para temperatura
+            if (categoria === 'temperatura') {
+                let tempEnCelsius;
+                
+                // Convertir a Celsius primero
+                if (unidadDe.value === 'celsius') {
+                    tempEnCelsius = valor;
+                } else if (unidadDe.value === 'fahrenheit') {
+                    tempEnCelsius = (valor - 32) * 5/9;
+                } else if (unidadDe.value === 'kelvin') {
+                    tempEnCelsius = valor - 273.15;
+                }
+                
+                // Convertir de Celsius a la unidad destino
+                let resultadoTemp;
+                if (unidadA.value === 'celsius') {
+                    resultadoTemp = tempEnCelsius;
+                } else if (unidadA.value === 'fahrenheit') {
+                    resultadoTemp = (tempEnCelsius * 9/5) + 32;
+                } else if (unidadA.value === 'kelvin') {
+                    resultadoTemp = tempEnCelsius + 273.15;
+                }
+                
+                resultado.textContent = `${valor} ${unidadDe.options[unidadDe.selectedIndex].text.split(' ')[0]} = ${resultadoTemp.toFixed(4)} ${unidadA.options[unidadA.selectedIndex].text.split(' ')[0]}`;
+            } else {
+                // Conversión para otras categorías
+                const valorEnBase = valor * factorDe;
+                const valorConvertido = valorEnBase / factorA;
+                
+                resultado.textContent = `${valor} ${unidadDe.options[unidadDe.selectedIndex].text.split(' ')[0]} = ${valorConvertido.toFixed(6)} ${unidadA.options[unidadA.selectedIndex].text.split(' ')[0]}`;
+            }
+        }
+
+        function limpiarCalculadora() {
+            document.getElementById('calc-valor').value = '';
+            document.getElementById('calc-resultado').textContent = 'Resultado aparecerá aquí';
+        }
+
+        // Inicializar la calculadora al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            cambiarCategoria();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Mecánica de Fluidos</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/app.js"></script>
+  <script src="/js/login.js"></script>
+</head>
+<body>
+  <header>
+    <div class="logo-container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Universidad_Tecnol%C3%B3gica_de_Bol%C3%ADvar.png" alt="Logo" class="logo">
+      <h1>Plataforma Interactiva de Mecánica de Fluidos</h1>
+    </div>
+    <nav>
+      <a href="index.html" class="active">Inicio</a>
+      <a href="ejercicios.html">Ejercicios</a>
+      <a href="resultados.html">Resultados</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>      
+    </button>
+  </header>
+
+  <main>
+    <section class="inicio-section">
+      <h1>Bienvenido a la Plataforma Interactiva</h1>
+      <p>Explora ejercicios, mide tus resultados y mejora tus conocimientos de Mecánica de Fluidos de forma dinámica.</p>
+    </section>
+
+    <section id="acerca" class="acerca-section">
+      <h2>Acerca de este Proyecto</h2>
+      <div class="acerca-description">
+        <p>Este proyecto fue desarrollado por estudiantes de la Universidad Tecnológica de Bolívar como parte de un curso de programación web. Su objetivo es proporcionar una herramienta interactiva para el aprendizaje de la Mecánica de Fluidos.</p>
+      </div>
+
+      <div class="cards-container">
+            <!-- Tarjeta 1: Desarrolladores -->
+            <div class="info-card desarrolladores">
+                <h3><i class="fas fa-users"></i> Desarrolladores</h3>
+                <ul>
+                  <li>Juan David Zabalza Padilla</li>
+                  <li>Isabella Simancas Palis</li>
+                  <li>Luis Fernando Polo Contreras</li>
+                  <li>Leonard Dario Colon Camargo</li>
+                  <li>Jose Jaime Romero Hernández</li>
+                </ul>
+            </div>
+
+            <!-- Tarjeta 2: Profesor/Mentor -->
+            <div class="info-card profesor">
+                <h3><i class="fas fa-chalkboard-teacher"></i> Profesor / Mentor</h3>
+                <p class="nombre-profesor">Alfredo Abuchar</p>
+                <div class="institucion-info">
+                  <p>Universidad Tecnológica de Bolívar</p>
+                </div>
+            </div>
+
+            <!-- Tarjeta 3: Patrocinador/Sponsor -->
+            <div class="info-card patrocinador">
+                <h3><i class="fas fa-handshake"></i> Bajo la Supervisión de</h3>
+                <p><strong>Talento Tech</strong></p>
+                <img src="https://talentotech.gov.co/849/articles-334606_foto_marquesina.jpg"
+                 alt="Logo Talento Tech" class="logo-patrocinador-card">
+            </div>
+      </div>
+      
+    </section>
+  </main>
+
+  <footer>
+    <p>© 2025 Proyecto Mecánica de Fluidos - UTB</p>
+  </footer>
+
+  <!-- Enlace a Font Awesome para los íconos de las tarjetas -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</body>
+</html>

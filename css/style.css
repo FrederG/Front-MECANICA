@@ -1,0 +1,674 @@
+/* ================================================= */
+/* === 1. ESTILOS BASE Y GENERALES (Body, Fondo) === */
+/* ================================================= */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #f4f4f4;
+    background: url('https://previews.123rf.com/images/9george/9george1707/9george170700446/82113685-math-linear-mathematics-education-circle-background-with-geometrical-plots-seamless-background.jpg')
+                no-repeat center center fixed;
+    background-size: cover;
+    overflow-x: hidden;
+}
+
+/* --- Filtro oscuro para que resalten los contenedores --- */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5); /* capa oscura encima del fondo */
+    backdrop-filter: blur(2px);
+    z-index: -1;
+}
+
+/* --- Secciones principales --- */
+main {
+    /* Ajustado el margen superior para la altura del header horizontal */
+    margin-top: 80px;
+    padding: 20px;
+}
+
+section {
+    max-width: 1200px; /* Ancho mayor para la tabla de resultados */
+    margin: 50px auto;
+    background: rgba(3, 3, 3, 0.15);
+    backdrop-filter: blur(100px);
+    border-radius: 20px;
+    padding: 50px 30px;
+    text-align: center;
+    color: #fff;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Añadido borde para mejor contraste */
+}
+
+.contenedor-ejercicios {
+    max-width: 1000px;
+}
+
+/* --- Títulos y texto --- */
+h1, h2 {
+    color: white;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.7);
+}
+
+p {
+    text-align: center;
+    line-height: 1.6;
+    font-size: 1.1rem;
+    color: #ccc;
+}
+
+/* --- Footer --- */
+footer {
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(10px);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    margin-top: 60px;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+}
+
+.active {
+    color: #00bfff;
+    font-weight: bold;
+    border-bottom: 2px solid #00bfff;
+    padding-bottom: 2px;
+}
+
+/* --- Logo y título --- */
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo {
+    height: 45px;
+    width: 45px;
+    object-fit: contain;
+    border-radius: 5px; /* Añadido para mejor estética */
+}
+
+/* ==================================================== */
+/* === 2. ESTILOS DE NAVEGACIÓN (HEADER HORIZONTAL) === */
+/* ==================================================== */
+
+/* --- Encabezado --- */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    border-bottom: 1px solid rgba(255,255,255,0.15);
+    z-index: 1000;
+}
+
+/* --- Navegación --- */
+nav {
+    display: flex;
+    align-items: center;
+    gap: 25px; 
+    margin-left: 50px; 
+    flex-grow: 1; 
+    justify-content: flex-start;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+nav a:hover {
+    color: #00bfff;
+}
+
+/* --- Botón de Cerrar Sesión --- */
+.btn-logout {
+    background-color: #ff4c4c;
+    color: white;
+    border: none;
+    padding: 10px 18px;
+    margin-left: auto;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-logout:hover {
+    background-color: #ff2a2a;
+    transform: scale(1.05);
+}
+
+/* ================================================= */
+/* === 3. ESTILOS VISTAS HOME Y ACERCA DE (CARDS)=== */
+/* ================================================= */
+
+.inicio-section {
+    padding: 80px 30px;
+    max-width: 900px;
+    margin-top: 100px; /* Separación extra del header */
+    background: rgba(0, 0, 0, 0.4);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.inicio-section h1 {
+    font-size: 2.8em;
+    margin-bottom: 15px;
+    color: #00bfff;
+    text-transform: uppercase;
+}
+
+.inicio-section p {
+    font-size: 1.2em;
+    margin-bottom: 40px;
+    color: #eee;
+}
+
+/* --- Sección Acerca de (Créditos) --- */
+.acerca-section {
+    max-width: 1100px; /* Ancho para las 3 tarjetas */
+    padding: 40px 20px;
+    text-align: center;
+    margin-bottom: 80px;
+}
+
+.acerca-section h2 {
+    color: #00bfff;
+    border-bottom: 2px solid rgba(0, 191, 255, 0.3);
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.acerca-description {
+    max-width: 800px;
+    margin: 0 auto 40px auto;
+}
+
+/* --- Contenedor de Tarjetas (Grid Layout) --- */
+.cards-container {
+    display: grid;
+    /* Ajusta automáticamente a 3 columnas en desktop, 1 en móvil */
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin-top: 40px;
+    text-align: left;
+}
+
+/* --- Estilo Base de Tarjeta (Card) --- */
+.info-card {
+    background: rgba(255, 255, 255, 0.05); /* Fondo muy sutil */
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.info-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 191, 255, 0.25);
+}
+
+.info-card h3 {
+    color: #00bfff;
+    font-size: 1.5em;
+    margin-top: 0;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(0, 191, 255, 0.4);
+    padding-bottom: 10px;
+}
+
+.info-card h3 i {
+    margin-right: 10px;
+}
+
+.info-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1; 
+}
+
+.info-card ul li {
+    padding: 5px 0;
+    color: #ccc;
+    font-size: 1em;
+    transition: color 0.2s;
+}
+
+.info-card ul li:hover {
+    color: #fff;
+}
+
+.info-card p {
+    color: #eee;
+    text-align: left;
+    margin: 5px 0;
+    line-height: 1.4;
+}
+
+/* --- Estilos Específicos para cada tarjeta --- */
+.desarrolladores {
+    border-left: 5px solid #00bfff; /* Azul principal */
+}
+.profesor {
+    border-left: 5px solid #2ecc71; /* Verde esmeralda */
+    justify-content: space-between;
+}
+.patrocinador {
+    border-left: 5px solid #f1c40f; /* Amarillo/Dorado */
+    justify-content: space-between;
+}
+
+.nombre-profesor {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2ecc71;
+    margin: 10px 0 5px 0;
+    text-align: center;
+}
+.institucion-info p {
+    font-size: 0.9em;
+    font-style: italic;
+    color: #aaa;
+    text-align: center;
+}
+.patrocinador p {
+    text-align: center;
+    font-size: 1.1em;
+    font-weight: 600;
+    color: #f1c40f;
+}
+
+.logo-patrocinador-card {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+    border-radius: 8px;
+    margin: 20px auto 0 auto;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+}
+
+/* ====================================================== */
+/* === 4. ESTILOS ESPECÍFICOS DE EJERCICIOS (CARDS) === */
+/* ====================================================== */
+
+/* Display de Puntaje General */
+.puntaje-total-display,
+#puntajeUsuarioDisplay {
+    text-align: center;
+    font-size: 1.3em;
+    color: #fff;
+    font-weight: bold;
+    margin: 20px auto;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid #00bfff;
+    border-radius: 10px;
+    max-width: 350px;
+}
+
+/* Botón General (para Eliminar Todos) */
+.btn-accion {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin-bottom: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+.btn-eliminar-todo {
+    background-color: #f39c12; /* Naranja para advertencia */
+}
+.btn-eliminar-todo:hover {
+    background-color: #e67e22;
+    transform: scale(1.03);
+}
+
+/* Tarjeta de Ejercicio (Card Style) */
+.ejercicio {
+    background: rgba(255, 255, 255, 0.08); 
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 30px auto;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.ejercicio:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
+}
+
+.ejercicio h3 {
+    color: #fff;
+    border-bottom: 2px solid #00bfff;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+    font-size: 1.8em;
+}
+
+.ejercicio img {
+    max-width: 90%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    margin: 20px auto;
+}
+
+/* Input y Acciones */
+.ejercicio input[type="number"] {
+    width: 90%;
+    max-width: 250px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1em;
+    background-color: #f0f0f0;
+    color: #333 !important; 
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    transition: all 0.3s;
+    margin: 15px auto;
+    display: block;
+}
+
+.ejercicio button[onclick^="guardarYEnviar"] {
+    background-color: #00bfff;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background 0.3s ease, transform 0.2s ease;
+    margin: 15px auto;
+    display: block;
+}
+
+.ejercicio button[onclick^="guardarYEnviar"]:hover {
+    background-color: #0099cc;
+    transform: scale(1.03);
+}
+
+/* Puntaje Parcial */
+.ejercicio p[id^="puntajeDisplay"] {
+    font-size: 1em;
+    color: #fff;
+    font-weight: 500;
+    padding: 8px 15px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    width: fit-content;
+    margin: 15px auto;
+}
+
+/* Semáforo */
+.semaforo {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 10px;
+    border-radius: 20px;
+    width: fit-content;
+    margin: 15px auto;
+}
+
+.luz {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.2;
+    transition: opacity 0.3s;
+}
+
+.semaforo .red.on {
+    background-color: #ff4c4c;
+    opacity: 1;
+}
+
+.semaforo .yellow.on {
+    background-color: #ffd700;
+    opacity: 1;
+}
+
+.semaforo .green.on {
+    background-color: #4caf50;
+    opacity: 1;
+}
+
+/* Navegación Carrusel (Anterior/Siguiente) */
+.nav-ejercicios {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 40px;
+    gap: 40px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 15px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.nav-ejercicios button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    transition: background 0.3s ease;
+}
+
+.nav-ejercicios button:hover {
+    background-color: #555;
+}
+
+#contador {
+    font-size: 1.2em;
+    color: #00bfff;
+    font-weight: bold;
+}
+
+/* ============================================== */
+/* === 5. ESTILOS ESPECÍFICOS DE RESULTADOS === */
+/* ============================================== */
+
+.tabla-container {
+    overflow-x: auto; /* Permite scroll horizontal en móviles */
+    margin-top: 30px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.tabla-resultados {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    text-align: left;
+    background: #2c3e50; /* Fondo oscuro */
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.tabla-resultados th, .tabla-resultados td {
+    padding: 12px 15px;
+    border: none; /* Eliminar bordes de celdas */
+    font-size: 0.95em;
+    color: #ecf0f1;
+}
+
+.tabla-resultados thead th {
+    background-color: #00bfff; /* Color de acento para encabezados */
+    color: #2c3e50;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tabla-resultados tbody tr:nth-child(even) {
+    background-color: #34495e; /* Fila par */
+}
+
+.tabla-resultados tbody tr:nth-child(odd) {
+    background-color: #2c3e50; /* Fila impar */
+}
+
+.tabla-resultados tbody tr:hover {
+    background-color: #1abc9c; /* Resaltar al pasar el mouse */
+    color: #fff;
+    cursor: default;
+}
+
+/* Estilos para el estado (color) */
+.estado-green {
+    color: #4caf50; /* Verde */
+    font-weight: bold;
+}
+
+.estado-yellow {
+    color: #ffd700; /* Amarillo */
+    font-weight: bold;
+}
+
+.estado-red {
+    color: #ff4c4c; /* Rojo */
+    font-weight: bold;
+}
+
+/* ====================================================== */
+/* === 6. RESPONSIVIDAD (Media Queries)             === */
+/* ====================================================== */
+
+@media screen and (max-width: 768px) {
+    /* Ajustes generales */
+    main {
+        padding: 10px;
+        margin-top: 100px;
+    }
+
+    section {
+        padding: 30px 15px;
+        margin: 30px auto;
+    }
+
+    /* Header y Navegación */
+    header {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px 5%;
+        height: auto;
+    }
+    
+    header .logo-container {
+        width: 100%;
+        justify-content: center;
+        margin-bottom: 10px;
+    }
+
+    nav {
+        width: 100%;
+        justify-content: space-around;
+        gap: 15px;
+        margin: 0;
+        padding-bottom: 10px;
+    }
+
+    nav a {
+        font-size: 0.9em;
+    }
+
+    .btn-logout {
+        margin-top: 10px;
+        width: 100%;
+    }
+    
+    /* Sección de Inicio (Home) */
+    .inicio-section {
+        padding: 40px 20px;
+    }
+
+    .inicio-section h1 {
+        font-size: 2em;
+    }
+
+    /* Tarjetas de Créditos */
+    .cards-container {
+        grid-template-columns: 1fr; /* Una sola columna en móvil */
+        gap: 20px;
+    }
+
+    /* Responsividad para la tabla (Ya existía en tu código) */
+    .tabla-resultados thead {
+        display: none; /* Oculta el encabezado de la tabla en móvil */
+    }
+    .tabla-resultados, .tabla-resultados tbody, .tabla-resultados tr, .tabla-resultados td {
+        display: block;
+        width: 100%;
+    }
+    .tabla-resultados tr {
+        margin-bottom: 15px;
+        border: 1px solid #34495e;
+        border-radius: 8px;
+        padding: 10px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .tabla-resultados td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+    .tabla-resultados td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: #00bfff;
+    }
+}

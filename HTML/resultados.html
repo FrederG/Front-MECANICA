@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Resultados - Mecánica de Fluidos</title>
+    <!-- Incluye solo el archivo style.css con todo el contenido unificado -->
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="/js/resultados.js"></script>
+    <script src="/js/app.js"></script>
+</head>
+
+<body>
+    <!-- 🧠 Header -->
+    <header>
+        <div class="logo-container">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Universidad_Tecnol%C3%B3gica_de_Bol%C3%ADvar.png"
+                alt="Logo" class="logo">
+            <h1>📊 Resultados de los Ejercicios</h1>
+        </div>
+
+        <nav>
+            <a href="index.html">Inicio</a>
+            <a href="ejercicios.html">Ejercicios</a>
+            <a href="resultados.html" class="active">Resultados</a>
+            <a href="index.html#Acerca">Acerca de</a>
+        </nav>
+        <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>      
+    </header>
+
+    <!-- 🧩 Contenido principal -->
+    <main>
+        <section class="contenedor-resultados">
+            
+            <h2>Historial de Desempeño</h2>
+            <p>Aquí puedes visualizar tu historial completo de resultados y puntajes.</p>
+
+            <!-- Contenedor del puntaje total -->
+            <div id="puntajeUsuarioDisplay" class="puntaje-total-display">
+                Cargando puntaje total...
+            </div>
+            
+            <!-- Botón de acción -->
+            <button onclick="eliminarTodos()" class="btn-accion btn-eliminar-todo">
+                🧹 Eliminar todos los resultados (Local)
+            </button>
+            
+            <!-- Contenedor de la tabla responsive -->
+            <div class="tabla-container">
+                <table id="tablaResultados" class="tabla-resultados">
+                    <thead>
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Ejercicio</th>
+                            <th>Respuesta</th>
+                            <th>Puntaje</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                        </tr>
+                    </thead>
+                    <!-- El cuerpo se llena con JavaScript -->
+                    <tbody>
+                        <tr><td colspan="6">Cargando datos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <!-- 🦶 Footer -->
+    <footer>
+        <p>© 2025 Proyecto Mecánica de Fluidos - UTB</p>
+    </footer>
+</body>
+</html>
