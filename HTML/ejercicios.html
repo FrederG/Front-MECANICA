@@ -9,104 +9,6 @@
     <script defer src="/js/ejercicios.js"></script>
     <script defer src="/js/app.js"></script>
     <style>
-        /* Estilos específicos para la calculadora flotante */
-        #calculadora-flotante {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            transition: all 0.3s ease;
-        }
-        
-        .calculadora-cerrada {
-            width: 150px;
-            height: 50px;
-            overflow: hidden;
-        }
-        
-        .calculadora-abierta {
-            width: 300px;
-            height: 400px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            overflow: hidden;
-        }
-        
-        #btn-toggle-calculadora {
-            width: 100%;
-            height: 50px;
-            background: #1e5799;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: bold;
-            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
-        }
-        
-        #calculadora-contenido {
-            padding: 15px;
-            height: calc(100% - 50px);
-            overflow-y: auto;
-        }
-        
-        #calculadora-contenido h3 {
-            margin-top: 0;
-            color: #1e5799;
-            text-align: center;
-        }
-        
-        .calc-seccion {
-            margin-bottom: 15px;
-        }
-        
-        .calc-seccion label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-        
-        .calc-seccion select, .calc-seccion input {
-            width: 100%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        
-        .calc-resultado {
-            margin-top: 15px;
-            padding: 10px;
-            background: #f0f8ff;
-            border-radius: 5px;
-            text-align: center;
-            font-weight: bold;
-        }
-        
-        .calc-botones {
-            display: flex;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        
-        .calc-botones button {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        
-        #btn-calcular {
-            background: #1e5799;
-            color: white;
-        }
-        
-        #btn-limpiar {
-            background: #e74c3c;
-            color: white;
-        }
-        
         /* Estilos para los selectores de unidades en respuestas */
         .respuesta-contenedor {
             display: flex;
@@ -159,56 +61,6 @@
     </style>
 </head>
 <body>
-    <!-- Calculadora de Unidades Flotante -->
-    <div id="calculadora-flotante" class="calculadora-cerrada">
-        <button id="btn-toggle-calculadora" onclick="toggleCalculadora()">
-            🔢 Calculadora
-        </button>
-        <div id="calculadora-contenido">
-            <h3>🔄 Conversor de Unidades</h3>
-            
-            <div class="calc-seccion">
-                <label>Categoría:</label>
-                <select id="calc-categoria" onchange="cambiarCategoria()">
-                    <option value="longitud">📏 Longitud</option>
-                    <option value="presion">⚙️ Presión</option>
-                    <option value="fuerza">💪 Fuerza</option>
-                    <option value="densidad">🧪 Densidad</option>
-                    <option value="viscosidad">💧 Viscosidad</option>
-                    <option value="velocidad">🚀 Velocidad</option>
-                    <option value="area">📐 Área</option>
-                    <option value="volumen">📦 Volumen</option>
-                    <option value="torque">🔧 Torque</option>
-                    <option value="temperatura">🌡️ Temperatura</option>
-                </select>
-            </div>
-            
-            <div class="calc-seccion">
-                <label>De:</label>
-                <select id="calc-unidad-de"></select>
-            </div>
-            
-            <div class="calc-seccion">
-                <label>A:</label>
-                <select id="calc-unidad-a"></select>
-            </div>
-            
-            <div class="calc-seccion">
-                <label>Valor:</label>
-                <input type="number" id="calc-valor" placeholder="Ingrese valor">
-            </div>
-            
-            <div class="calc-botones">
-                <button id="btn-calcular" onclick="calcularConversion()">Calcular</button>
-                <button id="btn-limpiar" onclick="limpiarCalculadora()">Limpiar</button>
-            </div>
-            
-            <div class="calc-resultado" id="calc-resultado">
-                Resultado aparecerá aquí
-            </div>
-        </div>
-    </div>
-    
     <header>
         <div class="logo-container">
             <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Universidad_Tecnol%C3%B3gica_de_Bol%C3%ADvar.png" alt="Logo" class="logo">
@@ -630,392 +482,221 @@
     </main>
 
     <script>
-        // Funciones para la calculadora flotante
-        function toggleCalculadora() {
-            const calculadora = document.getElementById('calculadora-flotante');
-            if (calculadora.classList.contains('calculadora-cerrada')) {
-                calculadora.classList.remove('calculadora-cerrada');
-                calculadora.classList.add('calculadora-abierta');
-            } else {
-                calculadora.classList.remove('calculadora-abierta');
-                calculadora.classList.add('calculadora-cerrada');
-            }
-        }
-
-        // Definir unidades por categoría
-        const unidades = {
-            longitud: [
-                { nombre: "Metros (m)", valor: 1 },
-                { nombre: "Centímetros (cm)", valor: 0.01 },
-                { nombre: "Milímetros (mm)", valor: 0.001 },
-                { nombre: "Pies (ft)", valor: 0.3048 },
-                { nombre: "Pulgadas (in)", valor: 0.0254 },
-                { nombre: "Yardas (yd)", valor: 0.9144 }
-            ],
-            presion: [
-                { nombre: "Pascales (Pa)", valor: 1 },
-                { nombre: "Kilopascales (kPa)", valor: 1000 },
-                { nombre: "Bares (bar)", valor: 100000 },
-                { nombre: "Atmósferas (atm)", valor: 101325 },
-                { nombre: "PSI (lb/in²)", valor: 6894.76 },
-                { nombre: "mmHg", valor: 133.322 }
-            ],
-            fuerza: [
-                { nombre: "Newtons (N)", valor: 1 },
-                { nombre: "Kilonewtons (kN)", valor: 1000 },
-                { nombre: "Kilogramos-fuerza (kgf)", valor: 9.80665 },
-                { nombre: "Libras-fuerza (lbf)", valor: 4.44822 },
-                { nombre: "Dinas (dyn)", valor: 0.00001 }
-            ],
-            densidad: [
-                { nombre: "kg/m³", valor: 1 },
-                { nombre: "g/cm³", valor: 1000 },
-                { nombre: "lb/ft³", valor: 16.0185 },
-                { nombre: "slug/ft³", valor: 515.379 }
-            ],
-            viscosidad: [
-                { nombre: "Pa·s", valor: 1 },
-                { nombre: "cP (centipoise)", valor: 0.001 },
-                { nombre: "P (poise)", valor: 0.1 },
-                { nombre: "lb/(ft·s)", valor: 1.48816 },
-                { nombre: "N·s/m²", valor: 1 }
-            ],
-            velocidad: [
-                { nombre: "m/s", valor: 1 },
-                { nombre: "km/h", valor: 0.277778 },
-                { nombre: "ft/s", valor: 0.3048 },
-                { nombre: "mph", valor: 0.44704 },
-                { nombre: "nudos", valor: 0.514444 }
-            ],
-            area: [
-                { nombre: "m²", valor: 1 },
-                { nombre: "cm²", valor: 0.0001 },
-                { nombre: "mm²", valor: 0.000001 },
-                { nombre: "ft²", valor: 0.092903 },
-                { nombre: "in²", valor: 0.00064516 },
-                { nombre: "hectáreas", valor: 10000 }
-            ],
-            volumen: [
-                { nombre: "m³", valor: 1 },
-                { nombre: "litros (L)", valor: 0.001 },
-                { nombre: "cm³", valor: 0.000001 },
-                { nombre: "ft³", valor: 0.0283168 },
-                { nombre: "in³", valor: 0.0000163871 },
-                { nombre: "galones (US)", valor: 0.00378541 }
-            ],
-            torque: [
-                { nombre: "N·m", valor: 1 },
-                { nombre: "kgf·m", valor: 9.80665 },
-                { nombre: "lbf·ft", valor: 1.35582 },
-                { nombre: "lbf·in", valor: 0.112985 }
-            ],
-            temperatura: [
-                { nombre: "Celsius (°C)", valor: "celsius" },
-                { nombre: "Fahrenheit (°F)", valor: "fahrenheit" },
-                { nombre: "Kelvin (K)", valor: "kelvin" }
-            ]
-        };
-
-        function cambiarCategoria() {
-            const categoria = document.getElementById('calc-categoria').value;
-            const unidadDe = document.getElementById('calc-unidad-de');
-            const unidadA = document.getElementById('calc-unidad-a');
-            
-            // Limpiar selects
-            unidadDe.innerHTML = '';
-            unidadA.innerHTML = '';
-            
-            // Llenar con nuevas unidades
-            unidades[categoria].forEach(unidad => {
-                const optionDe = document.createElement('option');
-                optionDe.textContent = unidad.nombre;
-                optionDe.value = unidad.valor;
-                unidadDe.appendChild(optionDe);
-                
-                const optionA = document.createElement('option');
-                optionA.textContent = unidad.nombre;
-                optionA.value = unidad.valor;
-                unidadA.appendChild(optionA);
-            });
-            
-            // Seleccionar opciones por defecto diferentes
-            if (unidades[categoria].length > 1) {
-                unidadA.selectedIndex = 1;
-            }
-        }
-
-        function calcularConversion() {
-            const categoria = document.getElementById('calc-categoria').value;
-            const valor = parseFloat(document.getElementById('calc-valor').value);
-            const unidadDe = document.getElementById('calc-unidad-de');
-            const unidadA = document.getElementById('calc-unidad-a');
-            const resultado = document.getElementById('calc-resultado');
-            
-            if (isNaN(valor)) {
-                resultado.textContent = "Ingrese un valor válido";
-                return;
-            }
-            
-            const factorDe = parseFloat(unidadDe.value);
-            const factorA = parseFloat(unidadA.value);
-            
-            // Manejo especial para temperatura
-            if (categoria === 'temperatura') {
-                let tempEnCelsius;
-                
-                // Convertir a Celsius primero
-                if (unidadDe.value === 'celsius') {
-                    tempEnCelsius = valor;
-                } else if (unidadDe.value === 'fahrenheit') {
-                    tempEnCelsius = (valor - 32) * 5/9;
-                } else if (unidadDe.value === 'kelvin') {
-                    tempEnCelsius = valor - 273.15;
-                }
-                
-                // Convertir de Celsius a la unidad destino
-                let resultadoTemp;
-                if (unidadA.value === 'celsius') {
-                    resultadoTemp = tempEnCelsius;
-                } else if (unidadA.value === 'fahrenheit') {
-                    resultadoTemp = (tempEnCelsius * 9/5) + 32;
-                } else if (unidadA.value === 'kelvin') {
-                    resultadoTemp = tempEnCelsius + 273.15;
-                }
-                
-                resultado.textContent = `${valor} ${unidadDe.options[unidadDe.selectedIndex].text.split(' ')[0]} = ${resultadoTemp.toFixed(4)} ${unidadA.options[unidadA.selectedIndex].text.split(' ')[0]}`;
-            } else {
-                // Conversión para otras categorías
-                const valorEnBase = valor * factorDe;
-                const valorConvertido = valorEnBase / factorA;
-                
-                resultado.textContent = `${valor} ${unidadDe.options[unidadDe.selectedIndex].text.split(' ')[0]} = ${valorConvertido.toFixed(6)} ${unidadA.options[unidadA.selectedIndex].text.split(' ')[0]}`;
-            }
-        }
-
-        function limpiarCalculadora() {
-            document.getElementById('calc-valor').value = '';
-            document.getElementById('calc-resultado').textContent = 'Resultado aparecerá aquí';
-        }
-
-        // Inicializar la calculadora al cargar la página
-        document.addEventListener('DOMContentLoaded', function() {
-            cambiarCategoria();
-        });
         let lastScroll = 0;  // almacena la posición anterior del scroll
-const header = document.querySelector("header");
+        const header = document.querySelector("header");
 
-window.addEventListener("scroll", () => {
-  const currentScroll = window.pageYOffset;
+        window.addEventListener("scroll", () => {
+            const currentScroll = window.pageYOffset;
 
-  // si bajamos, escondemos el header
-  if (currentScroll > lastScroll && currentScroll > 100) {
-    header.style.top = "-100px";  // muévelo fuera de la vista
-  } 
-  // si subimos, mostramos el header
-  else {
-    header.style.top = "0";
-  } 
+            // si bajamos, escondemos el header
+            if (currentScroll > lastScroll && currentScroll > 100) {
+                header.style.top = "-100px";  // muévelo fuera de la vista
+            } 
+            // si subimos, mostramos el header
+            else {
+                header.style.top = "0";
+            } 
 
-  lastScroll = currentScroll;
-});
+            lastScroll = currentScroll;
+        });
 
-// Este código debe estar en tu archivo /js/app.js o /js/login.js
-function cerrarSesion() {
-    // 1. Opcional: Eliminar el estado de sesión (como el usuario guardado)
-    localStorage.removeItem("usuarioActivo");
+        // Este código debe estar en tu archivo /js/app.js o /js/login.js
+        function cerrarSesion() {
+            // 1. Opcional: Eliminar el estado de sesión (como el usuario guardado)
+            localStorage.removeItem("usuarioActivo");
 
-    // 2. Redirigir al archivo ../index.html
-    window.location.href = "../index.html"; 
-}
+            // 2. Redirigir al archivo ../index.html
+            window.location.href = "../index.html"; 
+        }
     </script>
 
     <section>
         <script>
             console.log("✅ Script de ejercicios cargado correctamente");
 
-// --- Control de ejercicios visibles ---
-let ejercicioActual = 0;
-const ejercicios = document.querySelectorAll(".ejercicio");
-const Anterior = document.getElementById("btnAnterior");
-const Siguiente = document.getElementById("btnSiguiente");
-const contador = document.getElementById("contador");
+            // --- Control de ejercicios visibles ---
+            let ejercicioActual = 0;
+            const ejercicios = document.querySelectorAll(".ejercicio");
+            const Anterior = document.getElementById("btnAnterior");
+            const Siguiente = document.getElementById("btnSiguiente");
+            const contador = document.getElementById("contador");
 
-function mostrarEjercicio(index) {
-  ejercicios.forEach((ej, i) => {
-    ej.style.display = i === index ? "block" : "none";
-  });
+            function mostrarEjercicio(index) {
+                ejercicios.forEach((ej, i) => {
+                    ej.style.display = i === index ? "block" : "none";
+                });
 
-  contador.textContent = `Ejercicio ${index + 1} de ${ejercicios.length}`;
-  Anterior.disabled = index === 0;
-  Siguiente.disabled = index === ejercicios.length - 1;
-}
+                contador.textContent = `Ejercicio ${index + 1} de ${ejercicios.length}`;
+                Anterior.disabled = index === 0;
+                Siguiente.disabled = index === ejercicios.length - 1;
+            }
 
-Anterior.addEventListener("click", () => {
-  if (ejercicioActual > 0) {
-    ejercicioActual--;
-    mostrarEjercicio(ejercicioActual);
-  }
-});
+            Anterior.addEventListener("click", () => {
+                if (ejercicioActual > 0) {
+                    ejercicioActual--;
+                    mostrarEjercicio(ejercicioActual);
+                }
+            });
 
-Siguiente.addEventListener("click", () => {
-  if (ejercicioActual < ejercicios.length - 1) {
-    ejercicioActual++;
-    mostrarEjercicio(ejercicioActual);
-  }
-});
+            Siguiente.addEventListener("click", () => {
+                if (ejercicioActual < ejercicios.length - 1) {
+                    ejercicioActual++;
+                    mostrarEjercicio(ejercicioActual);
+                }
+            });
 
-if (ejercicios.length > 0) mostrarEjercicio(ejercicioActual);
+            if (ejercicios.length > 0) mostrarEjercicio(ejercicioActual);
 
-// ----------------------------------------------------------------------
-// PUNTAJE TOTAL
-// ----------------------------------------------------------------------
-async function actualizarPuntajeTotal() {
-  obtenerPuntajeDesdeServidor();
-}
+            // ----------------------------------------------------------------------
+            // PUNTAJE TOTAL
+            // ----------------------------------------------------------------------
+            async function actualizarPuntajeTotal() {
+                obtenerPuntajeDesdeServidor();
+            }
 
-// ----------------------------------------------------------------------
-// ENVIAR RESULTADO (EJERCICIOS SIMPLES)
-// ----------------------------------------------------------------------
-async function guardarYEnviar(numEjercicio) {
-  const usuario = localStorage.getItem("usuarioActivo");
-  if (!usuario) return alert("Debes iniciar sesión.");
+            // ----------------------------------------------------------------------
+            // ENVIAR RESULTADO (EJERCICIOS SIMPLES)
+            // ----------------------------------------------------------------------
+            async function guardarYEnviar(numEjercicio) {
+                const usuario = localStorage.getItem("usuarioActivo");
+                if (!usuario) return alert("Debes iniciar sesión.");
 
-  const input = document.querySelector(`#ejercicio${numEjercicio} input`);
-  const valor = input.value || "0";
+                const input = document.querySelector(`#ejercicio${numEjercicio} input`);
+                const valor = input.value || "0";
 
-  try {
-    const response = await fetch("https://backend-fluidos-production.up.railway.app/guardar_resultado/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        usuario,
-        ejercicio: numEjercicio,
-        respuesta: valor,
-      }),
-    });
+                try {
+                    const response = await fetch("https://backend-fluidos-production.up.railway.app/guardar_resultado/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            usuario,
+                            ejercicio: numEjercicio,
+                            respuesta: valor,
+                        }),
+                    });
 
-    const resultado = await response.json();
-    console.log("📡 Servidor respondió:", resultado);
+                    const resultado = await response.json();
+                    console.log("📡 Servidor respondió:", resultado);
 
-    const { color, puntaje } = resultado;
+                    const { color, puntaje } = resultado;
 
-    // Actualizar visualmente
-    const display = document.getElementById(`puntajeDisplay${numEjercicio}`);
-    if (display) display.textContent = `Puntaje: ${puntaje}`;
+                    // Actualizar visualmente
+                    const display = document.getElementById(`puntajeDisplay${numEjercicio}`);
+                    if (display) display.textContent = `Puntaje: ${puntaje}`;
 
-    const semaforo = document.querySelector(`#semaforo${numEjercicio}`);
-    if (semaforo) {
-      semaforo.querySelectorAll(".luz").forEach(l => l.classList.remove("on"));
-      semaforo.querySelector(`.${color}`).classList.add("on");
-    }
+                    const semaforo = document.querySelector(`#semaforo${numEjercicio}`);
+                    if (semaforo) {
+                        semaforo.querySelectorAll(".luz").forEach(l => l.classList.remove("on"));
+                        semaforo.querySelector(`.${color}`).classList.add("on");
+                    }
 
-    alert(
-      color === "green"
-        ? "✅ ¡Correcto!"
-        : color === "yellow"
-        ? "🟡 Casi correcto"
-        : "❌ Incorrecto"
-    );
+                    alert(
+                        color === "green"
+                            ? "✅ ¡Correcto!"
+                            : color === "yellow"
+                            ? "🟡 Casi correcto"
+                            : "❌ Incorrecto"
+                    );
 
-    actualizarPuntajeTotal();
-  } catch (error) {
-    console.error("❌ Error al enviar resultado:", error);
-    alert("Error al conectar con el servidor.");
-  }
-}
+                    actualizarPuntajeTotal();
+                } catch (error) {
+                    console.error("❌ Error al enviar resultado:", error);
+                    alert("Error al conectar con el servidor.");
+                }
+            }
 
-// ----------------------------------------------------------------------
-// ENVIAR EJERCICIO MÚLTIPLE
-// ----------------------------------------------------------------------
-async function guardarYEnviarMultiples(numEjercicio) {
-  const usuario = localStorage.getItem("usuarioActivo");
-  if (!usuario) return alert("Debes iniciar sesión.");
+            // ----------------------------------------------------------------------
+            // ENVIAR EJERCICIO MÚLTIPLE
+            // ----------------------------------------------------------------------
+            async function guardarYEnviarMultiples(numEjercicio) {
+                const usuario = localStorage.getItem("usuarioActivo");
+                if (!usuario) return alert("Debes iniciar sesión.");
 
-  const respuestas = obtenerRespuestasMultiples(numEjercicio);
+                const respuestas = obtenerRespuestasMultiples(numEjercicio);
 
-  try {
-    const response = await fetch("https://backend-fluidos-production.up.railway.app/guardar_resultado/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        usuario,
-        ejercicio: numEjercicio,
-        respuesta: JSON.stringify(respuestas),
-      }),
-    });
+                try {
+                    const response = await fetch("https://backend-fluidos-production.up.railway.app/guardar_resultado/", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({
+                            usuario,
+                            ejercicio: numEjercicio,
+                            respuesta: JSON.stringify(respuestas),
+                        }),
+                    });
 
-    const resultado = await response.json();
+                    const resultado = await response.json();
 
-    const { color, puntaje } = resultado;
+                    const { color, puntaje } = resultado;
 
-    const display = document.getElementById(`puntajeDisplay${numEjercicio}`);
-    if (display) display.textContent = `Puntaje: ${puntaje}`;
+                    const display = document.getElementById(`puntajeDisplay${numEjercicio}`);
+                    if (display) display.textContent = `Puntaje: ${puntaje}`;
 
-    const semaforo = document.querySelector(`#semaforo${numEjercicio}`);
-    if (semaforo) {
-      semaforo.querySelectorAll(".luz").forEach(l => l.classList.remove("on"));
-      semaforo.querySelector(`.${color}`).classList.add("on");
-    }
+                    const semaforo = document.querySelector(`#semaforo${numEjercicio}`);
+                    if (semaforo) {
+                        semaforo.querySelectorAll(".luz").forEach(l => l.classList.remove("on"));
+                        semaforo.querySelector(`.${color}`).classList.add("on");
+                    }
 
-    alert(
-      color === "green"
-        ? "✅ ¡Correcto!"
-        : color === "yellow"
-        ? "🟡 Casi correcto"
-        : "❌ Incorrecto"
-    );
+                    alert(
+                        color === "green"
+                            ? "✅ ¡Correcto!"
+                            : color === "yellow"
+                            ? "🟡 Casi correcto"
+                            : "❌ Incorrecto"
+                    );
 
-    actualizarPuntajeTotal();
-  } catch (error) {
-    alert("Error al conectar con el servidor.");
-  }
-}
+                    actualizarPuntajeTotal();
+                } catch (error) {
+                    alert("Error al conectar con el servidor.");
+                }
+            }
 
-// ----------------------------------------------------------------------
-// OBTENER RESPUESTAS
-// ----------------------------------------------------------------------
-function obtenerRespuestasMultiples(numEjercicio) {
-  return {
-    a: {
-      valor: document.getElementById(`respuesta${numEjercicio}a`).value,
-      unidad: document.getElementById(`unidad${numEjercicio}a`).value,
-    },
-    b: {
-      valor: document.getElementById(`respuesta${numEjercicio}b`).value,
-      unidad: document.getElementById(`unidad${numEjercicio}b`).value,
-    },
-    c: {
-      valor: document.getElementById(`respuesta${numEjercicio}c`).value,
-      unidad: document.getElementById(`unidad${numEjercicio}c`).value,
-    },
-    d: {
-      valor: document.getElementById(`respuesta${numEjercicio}d`).value,
-      unidad: document.getElementById(`unidad${numEjercicio}d`).value,
-    },
-  };
-}
+            // ----------------------------------------------------------------------
+            // OBTENER RESPUESTAS
+            // ----------------------------------------------------------------------
+            function obtenerRespuestasMultiples(numEjercicio) {
+                return {
+                    a: {
+                        valor: document.getElementById(`respuesta${numEjercicio}a`).value,
+                        unidad: document.getElementById(`unidad${numEjercicio}a`).value,
+                    },
+                    b: {
+                        valor: document.getElementById(`respuesta${numEjercicio}b`).value,
+                        unidad: document.getElementById(`unidad${numEjercicio}b`).value,
+                    },
+                    c: {
+                        valor: document.getElementById(`respuesta${numEjercicio}c`).value,
+                        unidad: document.getElementById(`unidad${numEjercicio}c`).value,
+                    },
+                    d: {
+                        valor: document.getElementById(`respuesta${numEjercicio}d`).value,
+                        unidad: document.getElementById(`unidad${numEjercicio}d`).value,
+                    },
+                };
+            }
 
-// --------------------------------------------------------------
-// PUNTAJE TOTAL DESDE EL SERVIDOR
-// --------------------------------------------------------------
-async function obtenerPuntajeDesdeServidor() {
-  const usuario = localStorage.getItem("usuarioActivo");
-  if (!usuario) return;
+            // --------------------------------------------------------------
+            // PUNTAJE TOTAL DESDE EL SERVIDOR
+            // --------------------------------------------------------------
+            async function obtenerPuntajeDesdeServidor() {
+                const usuario = localStorage.getItem("usuarioActivo");
+                if (!usuario) return;
 
-  try {
-    const res = await fetch(`https://backend-fluidos-production.up.railway.app/puntaje_total/${usuario}`);
-    const data = await res.json();
+                try {
+                    const res = await fetch(`https://backend-fluidos-production.up.railway.app/puntaje_total/${usuario}`);
+                    const data = await res.json();
 
-    const totalDisplay = document.getElementById("puntajeUsuarioDisplay");
-    if (totalDisplay) {
-      totalDisplay.textContent = `Puntaje total: ${data.puntaje_total}`;
-    }
-  } catch (error) {
-    console.error("❌ Error al obtener puntaje:", error);
-  }
-}
+                    const totalDisplay = document.getElementById("puntajeUsuarioDisplay");
+                    if (totalDisplay) {
+                        totalDisplay.textContent = `Puntaje total: ${data.puntaje_total}`;
+                    }
+                } catch (error) {
+                    console.error("❌ Error al obtener puntaje:", error);
+                }
+            }
 
-window.addEventListener("load", obtenerPuntajeDesdeServidor);
+            window.addEventListener("load", obtenerPuntajeDesdeServidor);
         </script>
     </section>
 </body>
