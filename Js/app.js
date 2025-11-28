@@ -16,8 +16,11 @@ window.addEventListener("scroll", () => {
   lastScroll = currentScroll;
 });
 
+// Este código debe estar en tu archivo /js/app.js o /js/login.js
 function cerrarSesion() {
-  localStorage.clear(); // Limpia todo (usuario, resultados, etc.)
-  alert("👋 Sesión cerrada correctamente");
-  window.location.href = "login.html"; // Redirige a tu página de login
+    // 1. Opcional: Eliminar el estado de sesión (como el usuario guardado)
+    localStorage.removeItem("usuarioActivo");
+
+    // 2. Redirigir al archivo ../index.html
+    window.location.href = "../index.html"; 
 }

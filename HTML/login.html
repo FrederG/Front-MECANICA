@@ -20,7 +20,7 @@
       <a href="resultados.html">Resultados</a>
       <a href="#acerca">Acerca de</a>
     </nav>
-    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>      
+    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
     </button>
   </header>
 
@@ -76,5 +76,36 @@
 
   <!-- Enlace a Font Awesome para los íconos de las tarjetas -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <section>
+        <script>
+            let lastScroll = 0;  // almacena la posición anterior del scroll
+const header = document.querySelector("header");
+
+window.addEventListener("scroll", () => {
+  const currentScroll = window.pageYOffset;
+
+  // si bajamos, escondemos el header
+  if (currentScroll > lastScroll && currentScroll > 100) {
+    header.style.top = "-100px";  // muévelo fuera de la vista
+  } 
+  // si subimos, mostramos el header
+  else {
+    header.style.top = "0";
+  } 
+
+  lastScroll = currentScroll;
+});
+
+// Este código debe estar en tu archivo /js/app.js o /js/login.js
+function cerrarSesion() {
+    // 1. Opcional: Eliminar el estado de sesión (como el usuario guardado)
+    localStorage.removeItem("usuarioActivo");
+
+    // 2. Redirigir al archivo ../index.html
+    window.location.href = "../index.html"; 
+}
+        </script>
+    </section>
 </body>
+
 </html>
