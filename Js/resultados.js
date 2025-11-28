@@ -1,7 +1,7 @@
 // Función para cargar resultados desde el servidor
 async function cargarResultados() {
     try {
-        const response = await fetch("http://127.0.0.1:8000/resultados_db/");
+        const response = await fetch("https://backend-fluidos-production.up.railway.app/resultados_db/");
         const data = await response.json();
 
         const tbody = document.querySelector("#tablaResultados tbody");
@@ -18,8 +18,8 @@ async function cargarResultados() {
             // Formatear la respuesta para que sea más legible
             let respuestaFormateada = r.respuesta;
             
-            // Si es el ejercicio 6 (múltiples respuestas), intentar formatear como JSON
-            if (r.ejercicio === 6) {
+            // Si es el ejercicio 6 o 10 (múltiples respuestas), intentar formatear como JSON
+            if (r.ejercicio === 6 || r.ejercicio === 10) {
                 try {
                     const respuestasMultiples = JSON.parse(r.respuesta);
                     respuestaFormateada = Object.entries(respuestasMultiples)
@@ -58,7 +58,7 @@ async function eliminarResultado(id) {
     if (!confirm("¿Seguro que deseas eliminar este resultado?")) return;
 
     try {
-        const response = await fetch(`http://127.0.0.1:8000/eliminar_resultado/${id}`, {
+        const response = await fetch(`https://backend-fluidos-production.up.railway.app/eliminar_resultado/${id}`, {
             method: "DELETE"
         });
 
@@ -76,7 +76,7 @@ async function eliminarTodos() {
     if (!confirm("⚠️ Esto borrará todos los resultados del servidor. ¿Estás seguro?")) return;
 
     try {
-        const response = await fetch("http://127.0.0.1:8000/eliminar_todos/", {
+        const response = await fetch("https://backend-fluidos-production.up.railway.app/eliminar_todos/", {
             method: "DELETE"
         });
 
@@ -101,7 +101,7 @@ async function mostrarPuntajeUsuario() {
     }
 
     try {
-        const res = await fetch(`http://127.0.0.1:8000/puntaje_total/${usuario}`);
+        const res = await fetch(`https://backend-fluidos-production.up.railway.app/puntaje_total/${usuario}`);
         const data = await res.json();
 
         display.textContent = `🎯 Puntaje total de ${data.usuario}: ${data.puntaje_total} puntos`;
@@ -111,16 +111,6 @@ async function mostrarPuntajeUsuario() {
         display.textContent = "❌ Error al conectar con el servidor";
         display.className = "puntaje-total-display error";
     }
-}
-
-// Función para limpiar resultados locales (localStorage)
-function limpiarResultadosLocales() {
-    if (!confirm("¿Deseas eliminar todos los resultados guardados localmente?")) return;
-    
-    localStorage.removeItem("resultados");
-    alert("✅ Resultados locales eliminados correctamente");
-    // Recargar la página para reflejar los cambios
-    location.reload();
 }
 
 // Cargar resultados cuando se carga la página
