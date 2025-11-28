@@ -6,7 +6,6 @@
   <title>Registro - Mecánica de Fluidos</title>
   <link rel="stylesheet" href="/css/style.css">
   <link rel="stylesheet" href="/css/login.css">
-  <script defer src="Js/register.js"></script>
 </head>
 
 <body>
@@ -32,6 +31,42 @@
 
       <button type="submit" class="login-btn">Registrarse</button>
       <p>¿Ya tienes cuenta? <a href="../index.html">Inicia sesión aquí</a></p>
+      <section>
+        <script >
+          document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("registerForm");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const usuario = document.getElementById("usuario").value;
+    const email = document.getElementById("email").value;
+    const contrasena = document.getElementById("contrasena").value;
+
+    try {
+      const response = await fetch("https://backend-fluidos-production.up.railway.app/register/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ usuario, email, contrasena })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        alert("✅ Registro exitoso. Ahora puedes iniciar sesión.");
+        window.location.href = "login.html";
+      } else {
+        alert("⚠️ " + data.detail);
+      }
+
+    } catch (error) {
+      console.error("❌ Error:", error);
+      alert("Error al conectar con el servidor.");
+    }
+  });
+});
+        </script>
+      </section>
     </form>
   </main>
 </body>
