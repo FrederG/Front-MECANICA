@@ -101,11 +101,6 @@ form.addEventListener("submit", async (e) => {
     console.error("❌ Error:", error);
   }
 });
-
-document.querySelector(".btn-cerrar-sesion").addEventListener("click", () => {
-  localStorage.removeItem("usuarioActivo"); // Borra el usuario guardado
-  window.location.href = "login.html";      // Redirige al login
-});
         </script>
     </div>
   </main>

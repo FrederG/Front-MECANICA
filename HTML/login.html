@@ -1,120 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Plataforma Mecánica de Fluidos</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="/css/login.css">
-    <style>
-        /* Estilo para los botones */
-        .btn-register {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .btn-register:hover {
-            background-color: #5a6268;
-        }
-
-        /* 💡 ESTILO AÑADIDO PARA OCULTAR EL ESPACIO VACÍO DEL MENSAJE */
-        .mensaje {
-            min-height: 1.2em; /* Mantiene una altura mínima para mostrar el mensaje */
-            margin-top: 15px;
-            text-align: center;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Mecánica de Fluidos</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="/js/app.js"></script>
+  <script src="/js/login.js"></script>
 </head>
-
 <body>
-    <header>
-        <div class="logo-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Universidad_Tecnol%C3%B3gica_de_Bol%C3%ADvar.png" alt="Logo" class="logo">
-            <h1>Acceso a la Plataforma</h1>
-        </div>
-    </header>
+  <header>
+    <div class="logo-container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b3/Universidad_Tecnol%C3%B3gica_de_Bol%C3%ADvar.png" alt="Logo" class="logo">
+      <h1>Plataforma Interactiva de Mecánica de Fluidos</h1>
+    </div>
+    <nav>
+      <a href="login.html" class="active">Inicio</a>
+      <a href="ejercicios.html">Ejercicios</a>
+      <a href="resultados.html">Resultados</a>
+      <a href="#acerca">Acerca de</a>
+    </nav>
+    <button class="btn-logout" onclick="cerrarSesion()">Cerrar sesión</button>
+    </button>
+  </header>
 
-    <main class="login-main">
-        <div class="login-card">
-            <h2>Iniciar Sesión 🔐</h2>
-            <p>Ingresa tus credenciales para acceder a tus ejercicios.</p>
+  <main>
+    <section class="inicio-section">
+      <h1>Bienvenido a la Plataforma Interactiva</h1>
+      <p>Explora ejercicios, mide tus resultados y mejora tus conocimientos de Mecánica de Fluidos de forma dinámica.</p>
+    </section>
 
-            <form id="loginForm">
-                <div class="input-group">
-                    <label for="usuario">👤 Usuario</label>
-                    <input type="text" id="usuario" placeholder="Escribe tu nombre de usuario" required>
-                </div>
+    <section id="acerca" class="acerca-section">
+      <h2>Acerca de este Proyecto</h2>
+      <div class="acerca-description">
+        <p>Este proyecto fue desarrollado por estudiantes de la Universidad Tecnológica de Bolívar como parte de un curso de programación web. Su objetivo es proporcionar una herramienta interactiva para el aprendizaje de la Mecánica de Fluidos.</p>
+      </div>
 
-                <div class="input-group">
-                    <label for="contrasena">🔑 Contraseña</label>
-                    <input type="password" id="contrasena" placeholder="••••••" required>
-                </div>
+      <div class="cards-container">
+            <!-- Tarjeta 1: Desarrolladores -->
+            <div class="info-card desarrolladores">
+                <h3><i class="fas fa-users"></i> Desarrolladores</h3>
+                <ul>
+                  <li>Juan David Zabalza Padilla</li>
+                  <li>Isabella Simancas Palis</li>
+                  <li>Luis Fernando Polo Contreras</li>
+                  <li>Leonard Dario Colon Camargo</li>
+                  <li>Jose Jaime Romero Hernández</li>
+                </ul>
+            </div>
 
-                <button type="submit" class="btn-login">Iniciar sesión</button>
-                
-                <button type="button" class="btn-register" onclick="window.location.href='HTML/register.html'">
-                    Crear nueva cuenta
-                </button>
-                
-                <p id="loginMensaje" class="mensaje"></p>
-            </form>
-            
-            </div>
-    </main>
+            <!-- Tarjeta 2: Profesor/Mentor -->
+            <div class="info-card profesor">
+                <h3><i class="fas fa-chalkboard-teacher"></i> Profesor / Mentor</h3>
+                <p class="nombre-profesor">Alfredo Abuchar</p>
+                <div class="institucion-info">
+                  <p>Universidad Tecnológica de Bolívar</p>
+                </div>
+            </div>
 
-    <script>
-        console.log("✅ login cargado correctamente");
+            <!-- Tarjeta 3: Patrocinador/Sponsor -->
+            <div class="info-card patrocinador">
+                <h3><i class="fas fa-handshake"></i> Bajo la Supervisión de</h3>
+                <p><strong>Talento Tech</strong></p>
+                <img src="https://talentotech.gov.co/849/articles-334606_foto_marquesina.jpg"
+                 alt="Logo Talento Tech" class="logo-patrocinador-card">
+            </div>
+      </div>
+      
+    </section>
+  </main>
 
-        const form = document.getElementById("loginForm");
-        const mensaje = document.getElementById("loginMensaje");
+  <footer>
+    <p>© 2025 Proyecto Mecánica de Fluidos - UTB</p>
+  </footer>
 
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
+  <!-- Enlace a Font Awesome para los íconos de las tarjetas -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <section>
+        <script>
+            let lastScroll = 0;  // almacena la posición anterior del scroll
+const header = document.querySelector("header");
 
-            const usuario = document.getElementById("usuario").value.trim();
-            const contrasena = document.getElementById("contrasena").value.trim();
+window.addEventListener("scroll", () => {
+  const currentScroll = window.pageYOffset;
 
-            try {
-                const response = await fetch("https://backend-fluidos-production.up.railway.app/login/", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ usuario, contrasena }),
-                });
+  // si bajamos, escondemos el header
+  if (currentScroll > lastScroll && currentScroll > 100) {
+    header.style.top = "-100px";  // muévelo fuera de la vista
+  } 
+  // si subimos, mostramos el header
+  else {
+    header.style.top = "0";
+  } 
 
-                const data = await response.json();
+  lastScroll = currentScroll;
+});
 
-                if (response.ok) {
-                    mensaje.style.color = "limegreen";
-                    mensaje.textContent = data.mensaje;
+// Este código debe estar en tu archivo /js/app.js o /js/login.js
+function cerrarSesion() {
+    // 1. Opcional: Eliminar el estado de sesión (como el usuario guardado)
+    localStorage.removeItem("usuarioActivo");
 
-                    // ✅ Guardar usuario en localStorage
-                    localStorage.setItem("usuarioActivo", usuario);
-
-                    // Redirigir a ejercicios
-                    setTimeout(() => {
-                        window.location.href = "ejercicios.html";
-                    }, 1000);
-                } else {
-                    mensaje.style.color = "red";
-                    mensaje.textContent = data.detail || "Error al iniciar sesión. Verifica usuario y contraseña.";
-                }
-
-            } catch (error) {
-                mensaje.style.color = "red";
-                mensaje.textContent = "Error de conexión con el servidor.";
-                console.error("❌ Error:", error);
-            }
-        });
-
-        /* El script del botón 'Cerrar Sesión' fue removido de aquí, ya que esta es la página de Login. */
-    </script>
+    // 2. Redirigir al archivo ../index.html
+    window.location.href = "../index.html"; 
+}
+        </script>
+    </section>
 </body>
+
 </html>
